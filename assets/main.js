@@ -1,22 +1,13 @@
-const addForm = document.querySelector('#addClipboards');
+const addForm = document.querySelector('#addClipboards'); // Form for adding clipboard
+// Form and button for editing clipboard 
 const editButton = document.querySelectorAll('.edit-menu');
 const editForm = document.querySelector('#editClipboards');
-const deleteButton = document.querySelectorAll('.delete-clipboards')
-const appCanvas = document.querySelector('.app-main');
-const clipboards = JSON.parse(localStorage.getItem('clipboards')) || [];
-const selections = [];
-let clipboardIndex;
-
-function lastEdited() {
-    const now = new Date();
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    const timeNow = `${now.getDate()} ${monthNames[now.getMonth()]} ${now.getFullYear()}, ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
-        .toString();
-
-    return timeNow
-}
+const deleteButton = document.querySelectorAll('.delete-clipboards'); // Button for deleting clipboard
+const reset = document.querySelector('.reset-clipboards');
+const appCanvas = document.querySelector('.app-main'); // Main app widget
+const clipboards = JSON.parse(localStorage.getItem('clipboards')) || []; // Loading the clipboard from browser's localstorage
+let clipboardIndex; // For Selection
+const selections = []; // NEXT For multiselection
 
 function addingClipboards(e) {
     e.preventDefault();
@@ -55,11 +46,23 @@ function editClipboards() {
 function editingClipboards(e) {
     const newTitle = (this.querySelector('[name=title-edit]')).value;
     const newContent = (this.querySelector('[name=content-edit]')).value;
-    clipboards[clipboardIndex].title = newTitle
-    clipboards[clipboardIndex].content = newContent
+    clipboards[clipboardIndex].title = newTitle;
+    clipboards[clipboardIndex].content = newContent;
+    clipboards[clipboardIndex].lastEdited = lastEdited();
     localStorage.setItem('clipboards', JSON.stringify(clipboards));
     createView(clipboards, appCanvas);
     this.reset();
+}
+
+function lastEdited() {
+    const now = new Date();
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const timeNow = `${now.getDate()} ${monthNames[now.getMonth()]} ${now.getFullYear()}, ${now.getHours()}:${now.getMinutes()}`
+        .toString();
+
+    return timeNow
 }
 
 function clipboardSelection(e) {
@@ -97,6 +100,7 @@ function clipboardRemoval(e) {
     e.preventDefault()
     const confirmDialog = confirm("Are you sure want to delete this clipboard?");
     if (confirmDialog) {
+        // BUG Multiselection : Wrong index number deleted, find better algorithm
         if (selections.length != 0) {
             for (let i = 0; i < (selections.length); i++) {
                 clipboards.splice(selections[i], 1);
@@ -117,6 +121,17 @@ function clipboardRemoval(e) {
     console.log(clipboardIndex);
 }
 
+function resetApp(e) {
+    const confirmReset = confirm("WARNING! All your Clipboards will be deleted, do you wish to continue?");
+    if (confirmReset) {
+        localStorage.removeItem('clipboards');
+        while (clipboards.length) {
+            clipboards.pop();
+        };
+        createView(clipboards, appCanvas);
+    } else return;
+}
+
 // For testing a return what key is pressed on keyboard
 function multiSelection(e) {
     if (e.ctrlKey) {
@@ -129,7 +144,7 @@ function multiSelection(e) {
 appCanvas.addEventListener('click', clipboardSelection);
 addForm.addEventListener('submit', addingClipboards);
 editForm.addEventListener('submit', editingClipboards);
-
+reset.addEventListener('click', resetApp);
 editButton.forEach(button => button.addEventListener('click', () => {
     try {
         editClipboards();
@@ -137,9 +152,6 @@ editButton.forEach(button => button.addEventListener('click', () => {
         return
     }
 }));
-
 deleteButton.forEach(button => button.addEventListener('click', clipboardRemoval));
 
 createView(clipboards, appCanvas);
-
-console.log(timeNow())
