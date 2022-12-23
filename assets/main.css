@@ -1,0 +1,136 @@
+:root {
+  --main-theme-fg: black;
+  --main-theme-bg: rgba(128, 128, 128, 0.685);
+  --widget-container-height: 70%;
+}
+
+body {
+  margin: 0;
+  /* height: 300vh; */
+  overflow: hidden;
+}
+
+nav {
+  width: 98vw;
+  margin: auto;
+  border-radius: 2px;
+  z-index: 1;
+}
+
+nav a i {
+  margin: auto 1.2rem auto 0.5rem;
+  font-size: 1.4rem;
+  text-decoration: none;
+  color: var(--main-theme-fg);
+}
+
+form.d-flex {
+  margin: auto 0 auto auto;
+  background-color: white;
+  border: 1px solid;
+  border-color: rgba(0, 0, 0, 0.418);
+  border-radius: 7px;
+}
+
+form.d-flex input {
+  border: none;
+}
+
+.main-app-canvas {
+  display: flex;
+  justify-content: space-around;
+  /* position: fixed; */
+  width: 100vw;
+  height: 45vw;
+  /* top: 10vw; */
+  margin: 5vw auto auto auto;
+  /* background-color: bisque; */
+  border-radius: 10px;
+  z-index: 0;
+}
+
+.app-sidebar {
+  display: flex;
+  min-height: var(--widget-container-height);
+  padding-top: 30px;
+  width: 20%;
+  border: 1px dashed black;
+  border-radius: 7px;
+}
+
+.app-sidebar li {
+  margin-top: 10px;
+}
+
+.app-sidebar a {
+  text-decoration: none;
+  color: black;
+  transition: all 0.3s;
+}
+
+.app-main {
+  display: flex;
+  min-height: var(--widget-container-height);
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-content: flex-start;
+  width: 95vw;
+  /* border: 1px dashed black; */
+  border-radius: 7px;
+  overflow-y: scroll;
+}
+
+.clipboard-component {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-top: 300px;
+  font-size: 1rem;
+  padding: 10px;
+  margin: 20px;
+  width: 280px;
+  height: 300px;
+  background-color: antiquewhite;
+  /* border: 1px solid rgb(77, 77, 77); */
+  border-radius: 2px;
+  transition: ease-in-out 0.2s;
+}
+
+.clipboard-component.selected {
+  box-shadow:0 0 12px #3b6fcf91;
+}
+
+/* .clipboard-component:hover {
+  transform: scale(1.05);
+} */
+
+.clipboard-component h4 {
+  text-align: center;
+}
+
+@media (max-width: 1080px) {
+  a.app-logo,
+  .main-button {
+    display: none;
+  }
+
+  .main-app-canvas {
+    margin-top: 8vh;
+    height: 80vh;
+  }
+
+  .app-main {
+    overflow-x: hidden;
+    width: 100vw;
+    min-height: 90vh;
+  }
+
+  .clipboard-component {
+    width: 65vw;
+    min-height: 40vh;
+  }
+
+}
