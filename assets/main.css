@@ -111,6 +111,11 @@ form.d-flex input {
   text-align: center;
 }
 
+.clipboard-component span {
+  margin: auto 0 0 auto;
+  font-size: 0.6rem;
+}
+
 @media (max-width: 1080px) {
   a.app-logo,
   .main-button {

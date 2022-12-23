@@ -7,6 +7,17 @@ const clipboards = JSON.parse(localStorage.getItem('clipboards')) || [];
 const selections = [];
 let clipboardIndex;
 
+function lastEdited() {
+    const now = new Date();
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const timeNow = `${now.getDate()} ${monthNames[now.getMonth()]} ${now.getFullYear()}, ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
+        .toString();
+
+    return timeNow
+}
+
 function addingClipboards(e) {
     e.preventDefault();
     const title = (this.querySelector('[name=title]')).value;
@@ -14,6 +25,7 @@ function addingClipboards(e) {
     const clipboard = {
         title: title,
         content: content,
+        lastEdited: lastEdited(),
     }
     clipboards.push(clipboard);
     localStorage.setItem('clipboards', JSON.stringify(clipboards));
@@ -28,6 +40,7 @@ function createView(clipboards = [], contentList) {
         <div class="clipboard-component" data-index=${i} id="clipboard-${i}">
             <h4>${content.title}</h4>
             <p>${content.content}</p>
+            <span>Last Edited on ${content.lastEdited}</span>
         </div>`;
     }).join('');
 }
@@ -128,3 +141,5 @@ editButton.forEach(button => button.addEventListener('click', () => {
 deleteButton.forEach(button => button.addEventListener('click', clipboardRemoval));
 
 createView(clipboards, appCanvas);
+
+console.log(timeNow())
